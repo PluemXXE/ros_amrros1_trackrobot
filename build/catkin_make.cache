@@ -1,2 +1,0 @@
-transbot_description:xiaorkinematics
--DCATKIN_DEVEL_PREFIX=/home/osp/xiaor_robotics/devel -DCMAKE_INSTALL_PREFIX=/home/osp/xiaor_robotics/install -G Unix Makefiles
