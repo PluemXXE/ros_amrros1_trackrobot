@@ -9,20 +9,22 @@
     <arg name="gui" default="true" doc="Launch the Gazebo GUI."/>
     <arg name="headless" default="false" doc="Run Gazebo without a GUI (headless mode)."/>
     <arg name="debug" default="false" doc="Enable Gazebo debugging."/>
-    <arg name="model" default="$(find transbot_description)/urdf/transbot_base_only.urdf.xacro" doc="Path to the robot's URDF/XACRO file."/>
+    <!-- <arg name="model" default="$(find transbot_description)/urdf/transbot_base_only.urdf.xacro" doc="Path to the robot's URDF/XACRO file."/> -->
+    <arg name="model" default="$(find transbot_description)/urdf/display_astra.urdf.xacro" doc="Path to the robot's URDF/XACRO file."/>
+
     <!-- <arg name="controllers_config" default="$(find transbot_description)/config/controllers.yaml" doc="Path to the ros_control configuration file."/> -->
 
 
     <!-- ===================================================================================== -->
     <!-- |                      STEP 1: LAUNCH GAZEBO SIMULATION WORLD                       | -->
     <!-- ===================================================================================== -->
-    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!-- <include file="$(find gazebo_ros)/launch/empty_world.launch">
         <arg name="paused" value="$(arg paused)"/>
         <arg name="use_sim_time" value="$(arg use_sim_time)"/>
         <arg name="gui" value="$(arg gui)"/>
         <arg name="headless" value="$(arg headless)"/>
         <arg name="debug" value="$(arg debug)"/>
-    </include>
+    </include> -->
 
 
     <!-- ===================================================================================== -->
@@ -47,7 +49,6 @@
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
           respawn="false" output="screen"/>
 
-    <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
-          output="screen" args="joint_state_controller diff_drive_controller"/> -->
+
 
 </launch>

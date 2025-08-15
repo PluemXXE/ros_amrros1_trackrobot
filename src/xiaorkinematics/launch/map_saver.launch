@@ -1,0 +1,15 @@
+<launch>
+    <!-- 
+        Launch file to save the map created by a SLAM node (like gmapping).
+        This file should be run in a new terminal WHILE the SLAM process is running.
+    -->
+
+    <!-- Argument to specify the name of the map file to be saved. -->
+    <!-- You can change the map name from the command line when you launch this file. -->
+    <arg name="map_name" default="my_map"/>
+
+    <!-- Run the map_saver node from the map_server package -->
+    <node name="map_saver" pkg="map_server" type="map_saver" respawn="false" output="screen"
+          args="-f $(find xiaorkinematics)/maps/$(arg map_name)" />
+
+</launch>

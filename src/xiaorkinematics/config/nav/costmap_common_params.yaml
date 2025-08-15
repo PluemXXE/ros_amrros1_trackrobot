@@ -1,0 +1,16 @@
+# พารามิเตอร์ที่ใช้ร่วมกันสำหรับ Global และ Local Costmaps
+
+# กำหนดรูปร่างของหุ่นยนต์ (สำคัญมากสำหรับการหลบหลีก)
+# footprint: [[-0.1, -0.1], [-0.1, 0.1], [0.1, 0.1], [0.1, -0.1]] # แบบสี่เหลี่ยม
+robot_radius: 0.15  # แบบวงกลม (ง่ายกว่าสำหรับเริ่มต้น) รัศมี 15 cm
+
+# ระยะปลอดภัยรอบๆ สิ่งกีดขวาง (เมตร)
+inflation_radius: 0.3
+
+# แหล่งข้อมูลของสิ่งกีดขวาง (ในที่นี้คือ Lidar)
+obstacle_layer:
+  enabled: true
+  obstacle_range: 2.5
+  raytrace_range: 3.0
+  observation_sources: laser_scan_sensor
+  laser_scan_sensor: {sensor_frame: laser, data_type: LaserScan, topic: /scan, marking: true, clearing: true}

@@ -1,44 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <launch>
+    <!-- ======================= Parameters & Arguments ======================= -->
+    <arg name="use_gui" default="false"/> <!-- ตั้งเป็น false เพราะเราไม่น่าจะต้องใช้ GUI -->
+    <param name="robot_description"
+           command="$(find xacro)/xacro '$(find transbot_description)/urdf/transbot_base_only.urdf.xacro'"/>
 
-    <!-- ===================================================================================== -->
-    <!-- |                      STEP 1: LAUNCH THE SIMULATION ENVIRONMENT                    | -->
-    <!-- ===================================================================================== -->
-    <!-- We still run the same Gazebo simulation as before. -->
-      <include file="$(find transbot_description)/launch/gazebo_control.launch" />
-      <param name="/use_sim_time" value="true"/>
+    <!-- ======================= Robot Model & TF ======================= -->
+    
+    <!-- joint_state_publisher ไม่จำเป็นถ้า URDF ไม่มี joint ที่เคลื่อนไหว (เช่น ล้อ) -->
+    <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/> -->
+    
+    <!-- อ่าน URDF และสร้าง TF สำหรับ joint แบบ 'fixed' (เช่น base_footprint -> base_link) -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
 
-    <!-- ... -->
+    <!-- สร้าง TF แบบ static ด้วยมือ สำหรับเชื่อม Lidar เข้ากับหุ่นยนต์ -->
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser"
+          args="0.0484 0 0.10403 0 0 0 /base_link /laser 30"/>
 
-    <!-- ===================================================================================== -->
-    <!-- |                  STEP 2: LAUNCH YOUR CUSTOM INVERSE KINEMATICS DRIVER             | -->
-    <!-- ===================================================================================== -->
-    <!-- Run the same manual driver node. -->
-    <node name="manual_driver_node"
-          pkg="xiaorkinematics"
-          type="manual_driver_node"
-          output="screen" />
+    <!-- ======================= Robot Drivers & Sensors ======================= -->
 
+    <!-- รัน Node Odometry ของคุณ (จากไฟล์ move_base.cpp) -->
+    <node pkg="xiaorkinematics" type="move_base_node" name="odometry_publisher_node" output="screen">
+        <param name="linear_scale" value="1.0"/>
+    </node>
 
-    <!-- ===================================================================================== -->
-    <!-- |                      STEP 3: LAUNCH THE KEYBOARD CONTROLLER                       | -->
-    <!-- ===================================================================================== -->
-    <!-- We still need the keyboard to send /cmd_vel commands. -->
-    <node name="teleop_twist_keyboard"
-          pkg="teleop_twist_keyboard"
-          type="teleop_twist_keyboard.py"
-          output="screen"
-          launch-prefix="gnome-terminal --" />
+    <!-- รัน Node สำหรับ RPLIDAR -->
+    <node name="rplidarNode" pkg="rplidar_ros" type="rplidarNode" output="screen">
+        <param name="serial_port" type="string" value="/dev/ttyUSB0"/>
+        <param name="serial_baudrate" type="int" value="115200"/>
+        <param name="frame_id" type="string" value="laser"/>
+        <param name="inverted" type="bool" value="false"/>
+        <param name="angle_compensate" type="bool" value="true"/>
+    </node>
 
-
-    <!-- ===================================================================================== -->
-    <!-- |                           STEP 4: LAUNCH RVIZ FOR DEBUGGING                         | -->
-    <!-- ===================================================================================== -->
-    <!-- This is the new part. We launch RViz and tell it to use our saved configuration file. -->
-    <node name="rviz"
-          pkg="rviz"
-          type="rviz"
-          args="-d $(find xiaorkinematics)/rviz/debug_drive.rviz"
-          required="true" />
+    <!-- ======================= Visualization ======================= -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find transbot_description)/rviz/transbot.rviz"/>
 
 </launch>

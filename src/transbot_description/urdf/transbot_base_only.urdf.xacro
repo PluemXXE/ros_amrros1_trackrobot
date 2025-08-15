@@ -37,7 +37,8 @@
         <child link="base_link"/>
         <origin xyz="0.0 0.0 0.08" rpy="0 0 0"/>
     </joint>
-    <link name="astra_link">
+    
+    <!-- <link name="astra_link">
         <inertial>
             <origin xyz="0.0003 -3.63185E-06 -0.01238" rpy="0 0 0"/>
             <mass value="0.249477026881758"/>
@@ -64,72 +65,10 @@
                 <mesh filename="package://transbot_description/meshes/astra_link.STL"/>
             </geometry>
         </collision>
-    </link>
-    <link name="left_wheel_link">
-      <visual>
-        <!-- เราใช้ทรงกระบอก (cylinder) เพื่อความง่ายในการจำลอง ไม่ต้องใช้ mesh ก็ได้ -->
-        <origin xyz="0 0 0" rpy="1.5707 0 0" />
-        <geometry>
-          <cylinder radius="0.038" length="0.03"/> <!-- ใช้ค่า Radius ที่เราคำนวณ, length กะเอา -->
-        </geometry>
-        <material name="black">
-            <color rgba="0.1 0.1 0.1 1"/>
-        </material>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="1.5707 0 0" />
-        <geometry>
-          <cylinder radius="0.038" length="0.03"/>
-        </geometry>
-      </collision>
-      <inertial>
-        <mass value="0.1"/>
-        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-      </inertial>
-    </link>
-
-    <!-- Right Wheel Link (ทำเหมือนกัน) -->
-    <link name="right_wheel_link">
-      <visual>
-        <origin xyz="0 0 0" rpy="1.5707 0 0" />
-        <geometry>
-          <cylinder radius="0.038" length="0.03"/>
-        </geometry>
-        <material name="black"/>
-      </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="1.5707 0 0" />
-        <geometry>
-          <cylinder radius="0.038" length="0.03"/>
-        </geometry>
-      </collision>
-      <inertial>
-        <mass value="0.1"/>
-        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/>
-      </inertial>
-    </link>
+    </link> -->
 
 
-    <!-- ===================================================================================== -->
-    <!-- |                                  WHEEL JOINTS                                     | -->
-    <!-- ===================================================================================== -->
-    <!-- *** STEP 2: ประกาศ JOINT หลังจากที่ประกาศ LINK ที่มันจะใช้แล้ว *** -->
-
-    <!-- Left Wheel Joint -->
-    <joint name="left_wheel_joint" type="continuous">
-      <parent link="base_link"/>
-      <child link="left_wheel_link"/> <!-- ตอนนี้ ROS จะหา left_wheel_link เจอแล้ว -->
-      <origin xyz="0 0.07815 0.038" rpy="0 0 0"/>
-      <axis xyz="0 1 0"/>
-    </joint>
-
-    <!-- Right Wheel Joint -->
-    <joint name="right_wheel_joint" type="continuous">
-      <parent link="base_link"/>
-      <child link="right_wheel_link"/> <!-- ตอนนี้ ROS จะหา right_wheel_link เจอแล้ว -->
-      <origin xyz="0 -0.07815 0.038" rpy="0 0 0"/>
-      <axis xyz="0 1 0"/>
-    </joint>
+<!-- 
     <joint name="astra_joint" type="revolute">
         <origin xyz="0.0484 0 0.10494" rpy="0 0 0"/>
         <parent link="base_link"/>
@@ -450,18 +389,6 @@
         <child link="left_link3"/>
         <axis xyz="0 0 1"/>
         <mimic joint="left_joint2" multiplier="-1"/>
-    </joint>
-        <gazebo>
-        <plugin name="left_wheel_controller" filename="libgazebo_ros_joint_pose_trajectory.so">
-            <jointName>left_wheel_joint</jointName>
-            <commandTopic>left_wheel/command</commandTopic>
-        </plugin>
-    </gazebo>
-
-    <gazebo>
-        <plugin name="right_wheel_controller" filename="libgazebo_ros_joint_pose_trajectory.so">
-            <jointName>right_wheel_joint</jointName>
-            <commandTopic>right_wheel/command</commandTopic>
-        </plugin>
-    </gazebo>
+    </joint> -->
+ 
 </robot>

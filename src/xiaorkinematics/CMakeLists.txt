@@ -10,8 +10,10 @@ project(xiaorkinematics)
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   roscpp
+  tf
   std_msgs
-  tf2_ros  
+  # tf2_ros  
+  nav_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -134,14 +136,8 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-add_executable(kinematics_node src/kinematics_calculator.cpp)
-target_link_libraries(kinematics_node ${catkin_LIBRARIES})
-
 add_executable(move_base_node src/move_base.cpp)
 target_link_libraries(move_base_node ${catkin_LIBRARIES})
-
-add_executable(manual_driver_node src/manual_driver.cpp)
-target_link_libraries(manual_driver_node ${catkin_LIBRARIES})
 
 
 ## Rename C++ executable without prefix

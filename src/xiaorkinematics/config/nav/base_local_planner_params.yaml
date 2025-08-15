@@ -1,0 +1,22 @@
+# พารามิเตอร์สำหรับ TrajectoryPlannerROS หรือ DWA (Dynamic Window Approach)
+# นี่คือตัวอย่างสำหรับ TrajectoryPlannerROS ซึ่งเป็นค่าเริ่มต้น
+TrajectoryPlannerROS:
+  # Robot Configuration Parameters
+  max_vel_x: 0.3       # ความเร็วเดินหน้าสูงสุด (m/s)
+  min_vel_x: 0.1
+  max_vel_theta: 1.0   # ความเร็วหมุนสูงสุด (rad/s)
+  min_in_place_vel_theta: 0.4
+
+  acc_lim_theta: 2.0   # อัตราเร่งเชิงมุม
+  acc_lim_x: 1.5       # อัตราเร่งเชิงเส้น
+  acc_lim_y: 1.5
+
+  # Goal Tolerance Parameters
+  xy_goal_tolerance: 0.10 # ระยะห่างจากเป้าหมายที่ยอมรับได้ (เมตร)
+  yaw_goal_tolerance: 0.1 # องศาที่ยอมรับได้ (rad)
+
+  # Forward Simulation Parameters
+  sim_time: 1.5
+  vx_samples: 3
+  vtheta_samples: 20
+  holonomic_robot: false # ตั้งเป็น false สำหรับหุ่นยนต์ 2 ล้อ
