@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <!-- ===================================================================================== -->
+    <!-- |                                 ARGUMENTS & OPTIONS                                 | -->
+    <!-- ===================================================================================== -->
+    <arg name="paused" default="false" doc="Start Gazebo in a paused state."/>
+    <arg name="use_sim_time" default="true" doc="Use Gazebo's s   imulation time."/>
+    <arg name="gui" default="true" doc="Launch the Gazebo GUI."/>
+    <arg name="headless" default="false" doc="Run Gazebo without a GUI (headless mode)."/>
+    <arg name="debug" default="false" doc="Enable Gazebo debugging."/>
+    <arg name="model" default="$(find transbot_description)/urdf/transbot_base_only.urdf.xacro" doc="Path to the robot's URDF/XACRO file."/>
+    <!-- <arg name="controllers_config" default="$(find transbot_description)/config/controllers.yaml" doc="Path to the ros_control configuration file."/> -->
+
+
+    <!-- ===================================================================================== -->
+    <!-- |                      STEP 1: LAUNCH GAZEBO SIMULATION WORLD                       | -->
+    <!-- ===================================================================================== -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="$(arg headless)"/>
+        <arg name="debug" value="$(arg debug)"/>
+    </include>
+
+
+    <!-- ===================================================================================== -->
+    <!-- |                STEP 2: LOAD ROBOT MODEL INTO PARAMETER SERVER                     | -->
+    <!-- ===================================================================================== -->
+    <param name="robot_description" command="$(find xacro)/xacro $(arg model)"/>
+
+
+    <!-- ===================================================================================== -->
+    <!-- |                      STEP 3: SPAWN THE ROBOT INTO GAZEBO                          | -->
+    <!-- ===================================================================================== -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+          args="-param robot_description -urdf -model transbot"
+          respawn="false" output="screen" />
+
+
+    <!-- ===================================================================================== -->
+    <!-- |                  STEP 4: LAUNCH THE ROS CONTROL INFRASTRUCTURE                    | -->
+    <!-- ===================================================================================== -->
+    <!-- <rosparam file="$(arg controllers_config)" command="load"/> -->
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+          respawn="false" output="screen"/>
+
+    <!-- <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+          output="screen" args="joint_state_controller diff_drive_controller"/> -->
+
+</launch>
